@@ -5,9 +5,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <Mvx.MvxListView
-        android:id="@+id/TradeConfirmation"
+        android:id="@+id/notes_listview"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         local:MvxBind="ItemsSource Notes"
         local:MvxItemTemplate="@layout/note_lv_item" />
 </LinearLayout>

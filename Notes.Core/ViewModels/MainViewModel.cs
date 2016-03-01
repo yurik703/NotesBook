@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MvvmCross.Core.ViewModels;
@@ -10,15 +11,15 @@ namespace Notes.Core.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private IMvxCommand _newNoteCommand;
+        private IMvxCommand _editNoteCommand;
+        private IMvxCommand _removeNoteCommand;
 
         public ObservableCollection<NoteModel> Notes { get; set; } 
 
         public IMvxCommand NewNoteCommand => _newNoteCommand ?? (_newNoteCommand = new MvxCommand(ExecuteNewNoteCommand));
+        public IMvxCommand EditNoteCommand => _editNoteCommand ?? (_editNoteCommand = new MvxCommand<Int32>(ExecuteEditNoteCommand));
+        public IMvxCommand RemoveNoteCommand => _removeNoteCommand ?? (_removeNoteCommand = new MvxCommand<Int32>(ExecuteRemoveNoteCommand));
 
-        private void ExecuteNewNoteCommand()
-        {
-            ShowViewModel<NewNoteViewModel>();
-        }
 
         public MainViewModel()
         {
@@ -28,14 +29,22 @@ namespace Notes.Core.ViewModels
         private void InitModel()
         {
             var notes = LocalStorage.GetNotes();
-            var newnotes = new List<NoteModel>(notes);
+            Notes = new ObservableCollection<NoteModel>(notes);
+        }
 
-            for (int i = 0; i < 1000; i++)
-            {
-                newnotes.AddRange(notes);
-            }
-            
-            Notes = new ObservableCollection<NoteModel>(newnotes);
+        private void ExecuteNewNoteCommand()
+        {
+            ShowViewModel<NewNoteViewModel>();
+        }
+
+        private void ExecuteEditNoteCommand(int positionId)
+        {
+            //TODO: Inplement edit note
+        }
+
+        private void ExecuteRemoveNoteCommand(int positionId)
+        {
+            //TODO: Implement remove note
         }
     }
 }

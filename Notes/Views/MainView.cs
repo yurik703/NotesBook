@@ -1,6 +1,7 @@
 using Android.App;
 using Android.OS;
 using Android.Views;
+using Android.Widget;
 using MvvmCross.Droid.Views;
 using Notes.Core.ViewModels;
 
@@ -13,12 +14,39 @@ namespace Notes.Views
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.MainView);
+            var lv = FindViewById<ListView>(Resource.Id.notes_listview);
+            RegisterForContextMenu(lv);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.ActionBarMenu, menu);
             return true;
+        }
+
+        public override void OnCreateContextMenu(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
+        {
+            base.OnCreateContextMenu(menu, v, menuInfo);
+            if (v.Id == Resource.Id.notes_listview)
+            {
+                MenuInflater.Inflate(Resource.Menu.Menu_notes_list, menu);
+            }
+        }
+
+        public override bool OnContextItemSelected(IMenuItem item)
+        {
+            var info = (AdapterView.AdapterContextMenuInfo)item.MenuInfo;
+            switch (item.ItemId)
+            {
+                case Resource.Id.edit:
+                    ((MainViewModel)ViewModel).EditNoteCommand.Execute(info.Position);
+                    return true;
+                case Resource.Id.delete:
+                    ((MainViewModel)ViewModel).RemoveNoteCommand.Execute(info.Position);
+                    return true;
+                default:
+                    return base.OnContextItemSelected(item);
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

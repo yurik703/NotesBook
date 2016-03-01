@@ -113,9 +113,6 @@ namespace Notes
 			// aapt resource value: 0x7f050001
 			public const int MvxBindingTagUnique = 2131034113;
 			
-			// aapt resource value: 0x7f050002
-			public const int TradeConfirmation = 2131034114;
-			
 			// aapt resource value: 0x7f050008
 			public const int addNoteMenuItem = 2131034120;
 			
@@ -130,6 +127,15 @@ namespace Notes
 			
 			// aapt resource value: 0x7f050005
 			public const int contentNote = 2131034117;
+			
+			// aapt resource value: 0x7f05000a
+			public const int delete = 2131034122;
+			
+			// aapt resource value: 0x7f050009
+			public const int edit = 2131034121;
+			
+			// aapt resource value: 0x7f050002
+			public const int notes_listview = 2131034114;
 			
 			// aapt resource value: 0x7f050004
 			public const int titleNote = 2131034116;
@@ -175,6 +181,9 @@ namespace Notes
 			// aapt resource value: 0x7f070000
 			public const int ActionBarMenu = 2131165184;
 			
+			// aapt resource value: 0x7f070001
+			public const int Menu_notes_list = 2131165185;
+			
 			static Menu()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -193,6 +202,12 @@ namespace Notes
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
+			
+			// aapt resource value: 0x7f040004
+			public const int menu_delete = 2130968580;
+			
+			// aapt resource value: 0x7f040005
+			public const int menu_edit = 2130968581;
 			
 			// aapt resource value: 0x7f040003
 			public const int note = 2130968579;

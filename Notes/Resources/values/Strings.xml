@@ -3,4 +3,6 @@
   <string name="ApplicationName">Notes</string>
   <string name="title">Title</string>
   <string name="note">Note</string>
+  <string name="menu_delete">Delete</string>
+  <string name="menu_edit">Edit</string>
 </resources>
