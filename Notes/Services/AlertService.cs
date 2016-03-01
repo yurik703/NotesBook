@@ -1,5 +1,8 @@
 using System.Threading.Tasks;
 using Android.App;
+using MvvmCross.Platform;
+using MvvmCross.Platform.Droid.Platform;
+using MvvmCross.Platform.Exceptions;
 using Notes.Core.Interfaces;
 
 namespace Notes.Services
@@ -10,7 +13,16 @@ namespace Notes.Services
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(Application.Context);
+            var top = Mvx.Resolve<IMvxAndroidCurrentTopActivity>();
+            var act = top.Activity;
+            if (act == null)
+            {
+                // this can happen during transitions
+                // - you need to be sure that this won't happen for your code
+                throw new MvxException("Cannot get current top activity");
+            }
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(act);
             alert.SetTitle(title);
             alert.SetMessage(message);
             alert.SetPositiveButton("OK", (sender, args) =>
