@@ -15,7 +15,7 @@ namespace Notes.Core.ViewModels
         public string NoteBody { get; set; }
 
         public IMvxCommand CreateNewNoteCommand
-            => _createNewNoteCommand ?? (_createNewNoteCommand = new MvxCommand(async ()=> await ExecuteCreateNewNoteCommand()));
+            => _createNewNoteCommand ?? (_createNewNoteCommand = new MvxCommand(async () => await ExecuteCreateNewNoteCommand()));
 
         private async Task ExecuteCreateNewNoteCommand()
         {
@@ -36,6 +36,7 @@ namespace Notes.Core.ViewModels
                 CreateDateTime = DateTime.Now
             };
             LocalStorage.AddNote(noteModel);
+            Close(this);
         }
     }
 }
