@@ -1,22 +1,41 @@
-﻿using MvvmCross.Core.ViewModels;
+﻿using System;
+using System.Threading.Tasks;
+using MvvmCross.Core.ViewModels;
+using Notes.Core.Models;
 using PropertyChanged;
 
 namespace Notes.Core.ViewModels
 {
     [ImplementPropertyChanged]
-    public class NewNoteViewModel : MvxViewModel
+    public class NewNoteViewModel : BaseViewModel
     {
         private IMvxCommand _createNewNoteCommand;
 
-        public string Title { get; set; }
-        public string Content { get; set; }
+        public string NoteTitle { get; set; }
+        public string NoteBody { get; set; }
 
         public IMvxCommand CreateNewNoteCommand
-            => _createNewNoteCommand ?? (_createNewNoteCommand = new MvxCommand(ExecuteCreateNewNoteCommand));
+            => _createNewNoteCommand ?? (_createNewNoteCommand = new MvxCommand(async ()=> await ExecuteCreateNewNoteCommand()));
 
-        private void ExecuteCreateNewNoteCommand()
+        private async Task ExecuteCreateNewNoteCommand()
         {
-            //TODO: Impement save new note to local db
+            if (String.IsNullOrWhiteSpace(NoteTitle))
+            {
+                await AlertsService.ShowAlert("Error", "Title can not be empty");
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(NoteBody))
+            {
+                await AlertsService.ShowAlert("Error", "Note can not be empty");
+                return;
+            }
+            var noteModel = new NoteModel
+            {
+                Title = NoteTitle,
+                Note = NoteBody,
+                CreateDateTime = DateTime.Now
+            };
+            LocalStorage.AddNote(noteModel);
         }
     }
 }

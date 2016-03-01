@@ -117,7 +117,7 @@ namespace Notes
 			public const int addNoteMenuItem = 2131034119;
 			
 			// aapt resource value: 0x7f050006
-			public const int button1 = 2131034118;
+			public const int btnCreate = 2131034118;
 			
 			// aapt resource value: 0x7f050005
 			public const int buttonWrapper = 2131034117;
@@ -187,6 +187,12 @@ namespace Notes
 			
 			// aapt resource value: 0x7f040000
 			public const int Hello = 2130968576;
+			
+			// aapt resource value: 0x7f040003
+			public const int note = 2130968579;
+			
+			// aapt resource value: 0x7f040002
+			public const int title = 2130968578;
 			
 			static String()
 			{

@@ -4,6 +4,7 @@ using MvvmCross.Core.ViewModels;
 using MvvmCross.Platform;
 using MvvmCross.Platform.Platform;
 using Notes.Core;
+using Notes.Core.Interfaces;
 using Notes.Database.Interfaces;
 
 namespace Notes
@@ -27,6 +28,7 @@ namespace Notes
         protected override void InitializeFirstChance()
         {
             Mvx.RegisterSingleton<ISQLite>(new Services.SQLite());
+            Mvx.RegisterSingleton<IAlertsService>(new Services.AlertService());
             base.InitializeFirstChance();
         }
     }

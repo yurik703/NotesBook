@@ -4,7 +4,7 @@ using PropertyChanged;
 namespace Notes.Core.ViewModels
 {
     [ImplementPropertyChanged]
-    public class MainViewModel : MvxViewModel
+    public class MainViewModel : BaseViewModel
     {
         public string Hello { get; set; } = "Hello MvvmCross";
 

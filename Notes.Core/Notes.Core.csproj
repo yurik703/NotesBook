@@ -37,10 +37,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Interfaces\IAlertsService.cs" />
     <Compile Include="Interfaces\ILocalStorage.cs" />
     <Compile Include="Models\NoteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storages\LocalStorage.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewNoteViewModel.cs" />
   </ItemGroup>
