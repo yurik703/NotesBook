@@ -1,3 +1,4 @@
+using System;
 using Android.App;
 using Android.OS;
 using Android.Views;
@@ -16,6 +17,21 @@ namespace Notes.Views
             SetContentView(Resource.Layout.MainView);
             var lv = FindViewById<ListView>(Resource.Id.notes_listview);
             RegisterForContextMenu(lv);
+            var searchView = FindViewById<SearchView>(Resource.Id.searchView);
+            searchView.SetIconifiedByDefault(false);
+            searchView.Focusable = false;
+            searchView.QueryTextChange += SearchViewOnQueryTextChange;
+            searchView.QueryTextSubmit += SearchViewOnQueryTextSubmit;
+        }
+
+        private void SearchViewOnQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
+        {
+            ((MainViewModel)ViewModel).FilterByTitleCommand.Execute(e.Query);
+        }
+
+        private void SearchViewOnQueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e)
+        {
+            ((MainViewModel)ViewModel).FilterByTitleCommand.Execute(e.NewText);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

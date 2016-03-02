@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using MvvmCross.Binding.BindingContext;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Plugins.Messenger;
 using Notes.Core.EventsMessages;
@@ -22,17 +21,22 @@ namespace Notes.Core.ViewModels
         private IMvxCommand _editNoteCommand;
         private IMvxCommand _removeNoteCommand;
         private IMvxCommand _itemSelectedCommand;
+        private IMvxCommand _filterByTitleCommand;
 
-        public ObservableCollection<NoteModel> Notes { get; set; } 
+        private List<NoteModel> _notes; 
+
+        public ObservableCollection<NoteModel> Notes { get; set; }
 
         [DoNotNotify]
         public IMvxCommand NewNoteCommand => _newNoteCommand ?? (_newNoteCommand = new MvxCommand(ExecuteNewNoteCommand));
         [DoNotNotify]
         public IMvxCommand EditNoteCommand => _editNoteCommand ?? (_editNoteCommand = new MvxCommand<Int32>(ExecuteEditNoteCommand));
         [DoNotNotify]
-        public IMvxCommand RemoveNoteCommand => _removeNoteCommand ?? (_removeNoteCommand = new MvxCommand<Int32>(async (id) => await ExecuteRemoveNoteCommand(id)));
+        public IMvxCommand RemoveNoteCommand => _removeNoteCommand ?? (_removeNoteCommand = new MvxCommand<Int32>(async id => await ExecuteRemoveNoteCommand(id)));
         [DoNotNotify]
         public IMvxCommand ItemSelectedCommand => _itemSelectedCommand ?? (_itemSelectedCommand = new MvxCommand<NoteModel>(ExecuteItemClickCommand));
+        [DoNotNotify]
+        public IMvxCommand FilterByTitleCommand => _filterByTitleCommand ?? (_filterByTitleCommand = new MvxCommand<String>(async str => await ExecuteFilterByTitleCommand(str)));
 
 
         public MainViewModel()
@@ -45,6 +49,7 @@ namespace Notes.Core.ViewModels
         private void InitModel()
         {
             var notes = LocalStorage.GetNotes();
+            _notes = new List<NoteModel>(notes);
             Notes = new ObservableCollection<NoteModel>(notes);
         }
 
@@ -80,9 +85,21 @@ namespace Notes.Core.ViewModels
             if (result)
             {
                 var note = Notes[positionId];
+                _notes.RemoveAll(x => x.Id == note.Id);
                 Notes.Remove(note);
                 LocalStorage.RemoveNote(note.Id);
             }
+        }
+
+        private async Task ExecuteFilterByTitleCommand(string searchStr)
+        {
+            await ExecuteDefferedAction(() => FilterByName(searchStr));
+        }
+
+        private void FilterByName(string searchStr)
+        {
+            var filteNotes = _notes.Where(x => x.Title.IndexOf(searchStr, StringComparison.OrdinalIgnoreCase) >= 0);
+            Notes = new ObservableCollection<NoteModel>(filteNotes);
         }
     }
 }

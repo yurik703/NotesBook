@@ -113,11 +113,11 @@ namespace Notes
 			// aapt resource value: 0x7f050001
 			public const int MvxBindingTagUnique = 2131034113;
 			
-			// aapt resource value: 0x7f050009
-			public const int addNoteMenuItem = 2131034121;
+			// aapt resource value: 0x7f05000a
+			public const int addNoteMenuItem = 2131034122;
 			
-			// aapt resource value: 0x7f050008
-			public const int btnCreate = 2131034120;
+			// aapt resource value: 0x7f050009
+			public const int btnCreate = 2131034121;
 			
 			// aapt resource value: 0x7f050006
 			public const int btnEdit = 2131034118;
@@ -131,14 +131,17 @@ namespace Notes
 			// aapt resource value: 0x7f050004
 			public const int contentNote = 2131034116;
 			
-			// aapt resource value: 0x7f05000b
-			public const int delete = 2131034123;
+			// aapt resource value: 0x7f05000c
+			public const int delete = 2131034124;
 			
-			// aapt resource value: 0x7f05000a
-			public const int edit = 2131034122;
+			// aapt resource value: 0x7f05000b
+			public const int edit = 2131034123;
+			
+			// aapt resource value: 0x7f050008
+			public const int notes_listview = 2131034120;
 			
 			// aapt resource value: 0x7f050007
-			public const int notes_listview = 2131034119;
+			public const int searchView = 2131034119;
 			
 			// aapt resource value: 0x7f050003
 			public const int titleNote = 2131034115;
