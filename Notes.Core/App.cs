@@ -2,6 +2,8 @@ using AutoMapper;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Platform;
 using MvvmCross.Platform.IoC;
+using MvvmCross.Plugins.Messenger;
+using Notes.Core.EventsMessages;
 using Notes.Core.Interfaces;
 using Notes.Core.Models;
 using Notes.Core.Storages;
@@ -23,6 +25,8 @@ namespace Notes.Core
             Mvx.RegisterSingleton<ILocalStorage>(new LocalStorage());
 
             new DataRepository().CreateDatabaseIfNotExist();
+
+            Mvx.Resolve<IMvxMessenger>().Publish(new ApplicationInitializedMessage(this));
 
             RegisterAppStart<MainViewModel>();
             
