@@ -5,4 +5,5 @@
   <string name="note">Note</string>
   <string name="menu_delete">Delete</string>
   <string name="menu_edit">Edit</string>
+  <string name="createNote">Create note</string>
 </resources>

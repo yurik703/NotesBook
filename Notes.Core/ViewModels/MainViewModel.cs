@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using MvvmCross.Binding.BindingContext;
 using MvvmCross.Core.ViewModels;
+using MvvmCross.Plugins.Messenger;
+using Notes.Core.EventsMessages;
 using Notes.Core.Models;
 using PropertyChanged;
 
@@ -10,19 +15,30 @@ namespace Notes.Core.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel : BaseViewModel
     {
+        private readonly MvxSubscriptionToken _newNoteAddedMessageToken;
+        private readonly MvxSubscriptionToken _updateNoteMessageToken;
+
         private IMvxCommand _newNoteCommand;
         private IMvxCommand _editNoteCommand;
         private IMvxCommand _removeNoteCommand;
+        private IMvxCommand _itemSelectedCommand;
 
         public ObservableCollection<NoteModel> Notes { get; set; } 
 
+        [DoNotNotify]
         public IMvxCommand NewNoteCommand => _newNoteCommand ?? (_newNoteCommand = new MvxCommand(ExecuteNewNoteCommand));
+        [DoNotNotify]
         public IMvxCommand EditNoteCommand => _editNoteCommand ?? (_editNoteCommand = new MvxCommand<Int32>(ExecuteEditNoteCommand));
-        public IMvxCommand RemoveNoteCommand => _removeNoteCommand ?? (_removeNoteCommand = new MvxCommand<Int32>(ExecuteRemoveNoteCommand));
+        [DoNotNotify]
+        public IMvxCommand RemoveNoteCommand => _removeNoteCommand ?? (_removeNoteCommand = new MvxCommand<Int32>(async (id) => await ExecuteRemoveNoteCommand(id)));
+        [DoNotNotify]
+        public IMvxCommand ItemSelectedCommand => _itemSelectedCommand ?? (_itemSelectedCommand = new MvxCommand<NoteModel>(ExecuteItemClickCommand));
 
 
         public MainViewModel()
         {
+            _newNoteAddedMessageToken = Messenger.Subscribe<NewNoteAddedMessage>(AddNewNote);
+            _updateNoteMessageToken = Messenger.Subscribe<UpdateNoteMessage>(UpdateNote);
             InitModel();
         }
 
@@ -32,6 +48,21 @@ namespace Notes.Core.ViewModels
             Notes = new ObservableCollection<NoteModel>(notes);
         }
 
+        private void UpdateNote(UpdateNoteMessage e)
+        {
+            InitModel();
+        }
+
+        private void AddNewNote(NewNoteAddedMessage newNoteAddedMessage)
+        {
+            InitModel();
+        }
+
+        private void ExecuteItemClickCommand(NoteModel note)
+        {
+            ShowViewModel<NoteViewModel>(note);
+        }
+
         private void ExecuteNewNoteCommand()
         {
             ShowViewModel<NewNoteViewModel>();
@@ -39,12 +70,19 @@ namespace Notes.Core.ViewModels
 
         private void ExecuteEditNoteCommand(int positionId)
         {
-            //TODO: Inplement edit note
+            var note = Notes[positionId];
+            ShowViewModel<EditNoteViewModel>(note);
         }
 
-        private void ExecuteRemoveNoteCommand(int positionId)
+        private async Task ExecuteRemoveNoteCommand(int positionId)
         {
-            //TODO: Implement remove note
+            var result = await AlertsService.ShowAlert("Confirm", "Are you sure want to delete a note?", "Ok", "Cancel");
+            if (result)
+            {
+                var note = Notes[positionId];
+                Notes.Remove(note);
+                LocalStorage.RemoveNote(note.Id);
+            }
         }
     }
 }

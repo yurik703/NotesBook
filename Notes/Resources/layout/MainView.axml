@@ -8,6 +8,6 @@
         android:id="@+id/notes_listview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        local:MvxBind="ItemsSource Notes"
+        local:MvxBind="ItemsSource Notes; ItemClick ItemSelectedCommand"
         local:MvxItemTemplate="@layout/note_lv_item" />
 </LinearLayout>
