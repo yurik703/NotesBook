@@ -8,7 +8,7 @@ namespace Notes.Services
 {
     public class SQLite : ISQLite
     {
-        private const string DATABASE_NAME = "Nodes.db";
+        private const string DATABASE_NAME = "Notes.db";
         private readonly string _path;
 
         public SQLite()
